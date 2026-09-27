@@ -1,0 +1,86 @@
+---
+import '../styles/global.css';
+import '../styles/ruby.css';
+import LedMatrix from '../components/LedMatrix.astro';
+
+const { title, description = 'micro:bit の公式教材を、親子で・子どもだけで・大人だけで、無理なく独学するための道案内サイトです。' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const pageTitle = title ? `${title}｜簡単microbit教室` : '簡単microbit教室';
+---
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet" />
+    <script is:inline>
+      // 画面が表示される前に、保存された学年をページに反映する（ちらつき防止）
+      try {
+        const p = JSON.parse(localStorage.getItem('em-profile') || '{}');
+        const h = document.documentElement;
+        if (p.furigana) h.dataset.grade = p.furigana;
+        h.dataset.cur = p.cur === 'off' ? 'off' : 'on';
+        if (p.who) h.dataset.who = p.who;
+        if (p.device) h.dataset.device = p.device;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <header class="site-head">
+      <div class="wrap">
+        <a class="logo" href={base}>
+          <LedMatrix pattern=".#.#.##########.###...#.." label="" />
+          簡単microbit教室
+        </a>
+        <nav class="site-nav" aria-label="メニュー">
+          <a href={`${base}lessons/`}>かだい</a>
+          <a href={`${base}help/`}>こまったとき</a>
+          <a href={`${base}about/`}>このサイトについて</a>
+        </nav>
+        <label class="furigana-switch">
+          ふりがな
+          <select id="furigana-select" aria-label="ふりがなの量">
+            <option value="all">ぜんぶ</option>
+            <option value="1">1年生</option>
+            <option value="2">2年生</option>
+            <option value="3">3年生</option>
+            <option value="4">4年生</option>
+            <option value="5">5年生</option>
+            <option value="6">6年生</option>
+            <option value="7">中学生</option>
+            <option value="adult">なし（大人）</option>
+          </select>
+        </label>
+      </div>
+    </header>
+    <main>
+      <div class="wrap">
+        <slot />
+      </div>
+    </main>
+    <footer class="site-foot">
+      <div class="wrap">
+        <p>
+          簡単microbit教室は、micro:bit Educational Foundation とは関係のない、非公式の学習サイトです。
+          各課題の本体は <a href="https://microbit.org/">microbit.org</a> の教材で、このサイトはその道案内をしています。
+        </p>
+        <p>
+          このサイトの文章は <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">CC BY-SA 4.0</a>、プログラムは MIT ライセンスです。
+          個人情報は集めていません。学年や進み具合は、お使いの端末の中にだけ保存されます。
+          <a href={`${base}about/`}>くわしく</a>
+        </p>
+      </div>
+    </footer>
+    <script>
+      import { getProfile, setProfile } from '../scripts/profile.js';
+      const sel = document.getElementById('furigana-select') as HTMLSelectElement;
+      sel.value = getProfile().furigana ?? 'all';
+      sel.addEventListener('change', () => setProfile({ furigana: sel.value }));
+    </script>
+  </body>
+</html>

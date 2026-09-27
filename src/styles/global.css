@@ -1,0 +1,95 @@
+/* 簡単microbit教室 — 方眼ノートの上に、micro:bit の赤い LED */
+:root {
+  --paper: #f5f8fb;       /* 方眼ノートの紙 */
+  --grid: #dde6ef;        /* 方眼の線 */
+  --ink: #1d2a47;         /* 本文（紺のインク） */
+  --ink-soft: #52607d;
+  --led: #e2342b;         /* LED の赤 */
+  --led-off: #d9dde4;
+  --board: #23283b;       /* 基板 */
+  --gold: #c08f14;        /* 端子の金 */
+  --done: #1d8f6f;        /* できた */
+  --card: #ffffff;
+  --radius-s: 6px;
+  --radius-l: 14px;
+  --font-head: 'Zen Maru Gothic', 'Hiragino Maru Gothic ProN', 'BIZ UDPGothic', sans-serif;
+  --font-body: 'BIZ UDPGothic', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 2;          /* ルビが入っても行が詰まらないように広め */
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+rt { font-size: 0.5em; line-height: 1; color: var(--ink-soft); font-weight: 400; }
+ruby { ruby-align: center; }
+a { color: #1f5fbf; text-underline-offset: 3px; }
+a:hover { color: var(--led); }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--font-head); font-weight: 700; line-height: 1.6; }
+h1 { font-size: clamp(1.7rem, 4vw, 2.3rem); margin: 0 0 .5rem; }
+h2 { font-size: 1.45rem; margin: 2.5rem 0 .75rem; }
+h3 { font-size: 1.15rem; margin: 1.75rem 0 .5rem; }
+img { max-width: 100%; }
+
+.wrap { max-width: 46rem; margin: 0 auto; padding: 0 1.25rem; }
+
+/* ヘッダー */
+.site-head { background: var(--board); color: #fff; }
+.site-head .wrap { max-width: 62rem; display: flex; align-items: center; gap: 1rem; min-height: 3.75rem; flex-wrap: wrap; }
+.logo { display: flex; align-items: center; gap: .6rem; color: #fff; text-decoration: none; font-family: var(--font-head); font-weight: 700; font-size: 1.15rem; }
+.logo:hover { color: #fff; }
+.logo .led { --size: 5px; --gap: 2px; padding: 4px; }
+.site-nav { display: flex; gap: 1rem; margin-left: auto; font-size: .95rem; }
+.site-nav a { color: #fff; text-decoration: none; }
+.site-nav a:hover { color: #ffb3ad; }
+.furigana-switch { display: flex; align-items: center; gap: .4rem; font-size: .85rem; }
+.furigana-switch select { font: inherit; padding: .15rem .3rem; border-radius: var(--radius-s); border: 0; }
+
+/* 5×5 LED */
+.led {
+  --size: 18px; --gap: 7px;
+  display: inline-grid;
+  grid-template-columns: repeat(5, var(--size));
+  gap: var(--gap);
+  padding: calc(var(--gap) * 1.5);
+  background: var(--board);
+  border-radius: var(--radius-s);
+}
+.led span { width: var(--size); height: var(--size); border-radius: 2px; background: #3a4058; }
+.led span.on { background: var(--led); box-shadow: 0 0 calc(var(--size) * .6) rgba(226, 52, 43, .75); }
+
+main { padding: 2rem 0 4rem; }
+
+/* 汎用パーツ */
+.panel { background: var(--card); border: 2px solid var(--ink); border-radius: var(--radius-l); padding: 1.25rem 1.5rem; }
+.btn {
+  display: inline-block; font: inherit; font-family: var(--font-head); font-weight: 700;
+  padding: .55rem 1.3rem; border-radius: 999px; border: 2px solid var(--ink);
+  background: var(--led); color: #fff; cursor: pointer; text-decoration: none; line-height: 1.8;
+}
+.btn:hover { color: #fff; filter: brightness(1.07); }
+.btn.secondary { background: #fff; color: var(--ink); }
+.note { font-size: .92rem; color: var(--ink-soft); }
+
+/* フッター */
+.site-foot { border-top: 2px solid var(--ink); background: #fff; font-size: .88rem; color: var(--ink-soft); padding: 1.5rem 0 2rem; line-height: 1.8; }
+.site-foot a { color: var(--ink-soft); }
+
+@media (max-width: 640px) {
+  .site-nav { margin-left: 0; width: 100%; }
+  .panel { padding: 1rem 1.1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

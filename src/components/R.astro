@@ -1,0 +1,7 @@
+---
+// 文章に学年別ルビを付けて出力する： <R t="自分の名前を表示しよう" />
+import { toRubyHtml } from '../lib/furigana.mjs';
+const { t } = Astro.props;
+const html = await toRubyHtml(t);
+---
+<Fragment set:html={html} />

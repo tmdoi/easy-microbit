@@ -1,0 +1,21 @@
+{
+  "name": "easy-microbit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "簡単microbit教室 — microbit.org の教材で独学するための道案内サイト",
+  "scripts": {
+    "predev": "node scripts/gen-ruby-css.mjs",
+    "dev": "astro dev",
+    "gen:ruby": "node scripts/gen-ruby-css.mjs",
+    "build": "node scripts/gen-ruby-css.mjs && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "7.3.1",
+    "astro": "7.3.5",
+    "kuromoji": "0.1.2",
+    "rehype-raw": "7.0.0"
+  },
+  "license": "MIT"
+}

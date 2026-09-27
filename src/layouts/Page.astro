@@ -1,0 +1,13 @@
+---
+import Base from './Base.astro';
+const { frontmatter } = Astro.props;
+---
+<Base title={frontmatter.title}>
+  <article class="page panel">
+    <slot />
+  </article>
+</Base>
+<style is:global>
+  .page > h1:first-child { margin-top: .25rem; }
+  .page h2 { border-bottom: 2px solid var(--grid); padding-bottom: .2rem; }
+</style>

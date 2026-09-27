@@ -1,0 +1,8 @@
+---
+// micro:bit の 5×5 LED を模した表示。pattern は 25 文字（#=点灯, .=消灯）
+const { pattern = '.#.#.#####.###...#...' + '....', label = '', id } = Astro.props;
+const cells = pattern.replace(/\s/g, '').padEnd(25, '.').slice(0, 25).split('');
+---
+<div class="led" role="img" aria-label={label} id={id}>
+  {cells.map((c) => <span class={c === '#' ? 'on' : ''}></span>)}
+</div>

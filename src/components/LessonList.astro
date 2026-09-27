@@ -1,0 +1,48 @@
+---
+import LedMatrix from './LedMatrix.astro';
+import R from './R.astro';
+import { lessons } from '../lib/lessons.js';
+const base = import.meta.env.BASE_URL;
+---
+<ol class="lesson-list">
+  {lessons.map((l, i) => (
+    <li class="lesson-item" data-id={l.id}>
+      <LedMatrix pattern={l.led} label="" />
+      <div class="lesson-text">
+        <p class="lesson-no"><R t={`かだい ${i + 1}`} /><span class="done-tag">できた！</span></p>
+        {l.ready ? (
+          <a class="lesson-title" href={`${base}lessons/${l.id}/`}><R t={l.title} /></a>
+        ) : (
+          <span class="lesson-title"><R t={l.title} /></span>
+        )}
+        <p class="lesson-sum"><R t={l.summary} /></p>
+        {!l.ready && (
+          <p class="lesson-soon"><R t="案内ページは準備中です。" /><a href={l.official} target="_blank" rel="noopener">microbit.org のページ（英語）</a></p>
+        )}
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .lesson-list { list-style: none; padding: 0; margin: 0; display: grid; gap: .9rem; }
+  .lesson-item { display: flex; gap: 1rem; align-items: flex-start; background: var(--card); border: 2px solid var(--ink); border-radius: var(--radius-l); padding: 1rem 1.25rem; }
+  .lesson-item :global(.led) { --size: 9px; --gap: 3px; flex: none; margin-top: .3rem; }
+  .lesson-text p { margin: 0; }
+  .lesson-no { font-family: var(--font-head); font-weight: 700; color: var(--led); font-size: .9rem; }
+  .lesson-title { font-family: var(--font-head); font-weight: 700; font-size: 1.2rem; }
+  span.lesson-title { color: var(--ink-soft); }
+  .lesson-sum { color: var(--ink); }
+  .lesson-soon { font-size: .88rem; color: var(--ink-soft); }
+  .done-tag { display: none; margin-left: .6rem; padding: 0 .6rem; border-radius: 999px; background: var(--done); color: #fff; font-size: .8rem; }
+  .lesson-item.is-done { border-color: var(--done); }
+  .lesson-item.is-done .done-tag { display: inline-block; }
+</style>
+
+<script>
+  import { getProgress } from '../scripts/profile.js';
+  const p = getProgress();
+  document.querySelectorAll<HTMLElement>('.lesson-item').forEach((el) => {
+    if (p[el.dataset.id!]?.done) el.classList.add('is-done');
+  });
+</script>

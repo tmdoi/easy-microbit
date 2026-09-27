@@ -1,0 +1,139 @@
+---
+import Base from '../layouts/Base.astro';
+import LedMatrix from '../components/LedMatrix.astro';
+import LessonList from '../components/LessonList.astro';
+import R from '../components/R.astro';
+const base = import.meta.env.BASE_URL;
+
+const grades = [
+  ['1', '1年生'], ['2', '2年生'], ['3', '3年生'], ['4', '4年生'],
+  ['5', '5年生'], ['6', '6年生'], ['7', '中学生'],
+];
+---
+<Base>
+  <section class="hero">
+    <LedMatrix pattern=".#.#.##########.###...#.." label="micro:bit の LED にハートが光っている" id="hero-led" />
+    <div>
+      <h1><R t="micro:bit を、おうちで。" /></h1>
+      <p class="lead"><R t="公式の教材を使って、自分のペースで学べる道案内です。はじめに、4つの質問に答えてください。" /></p>
+    </div>
+  </section>
+
+  <form class="quiz panel" id="quiz" onsubmit="return false">
+    <fieldset>
+      <legend><R t="1. だれがやる？" /></legend>
+      <div class="chips">
+        <label><input type="radio" name="who" value="child" /><span><R t="子どもだけ" /></span></label>
+        <label><input type="radio" name="who" value="family" /><span><R t="親子で" /></span></label>
+        <label><input type="radio" name="who" value="adult" /><span><R t="大人だけ" /></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset id="q-grade">
+      <legend><R t="2. 子どもは何年生？" /></legend>
+      <div class="chips">
+        {grades.map(([v, t]) => (
+          <label><input type="radio" name="grade" value={v} /><span><R t={t} /></span></label>
+        ))}
+      </div>
+      <p class="note"><R t="学年に合わせて、まだ習っていない漢字にふりがなが付きます。" /></p>
+    </fieldset>
+
+    <fieldset>
+      <legend><R t="3. 何を使う？" /></legend>
+      <div class="chips">
+        <label><input type="radio" name="device" value="usb" /><span>Windows・Chromebook</span></label>
+        <label><input type="radio" name="device" value="mac" /><span>Mac</span></label>
+        <label><input type="radio" name="device" value="tablet" /><span>iPad・スマホ</span></label>
+        <label><input type="radio" name="device" value="" /><span><R t="まだわからない" /></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><R t="4. micro:bit は手元にある？" /></legend>
+      <div class="chips">
+        <label><input type="radio" name="has" value="yes" /><span>ある</span></label>
+        <label><input type="radio" name="has" value="no" /><span><R t="まだない" /></span></label>
+      </div>
+    </fieldset>
+  </form>
+
+  <section class="result" id="result" hidden>
+    <p class="result-msg" id="msg-nobit" hidden><R t="micro:bit がなくても、画面の中の micro:bit（シミュレーター）で始められます。" /></p>
+    <p class="result-msg" id="msg-tablet" hidden><R t="iPad やスマホで作ったプログラムを micro:bit に送るには、公式アプリと Bluetooth を使います。はじめは大人の人といっしょにやりましょう。" /></p>
+    <a class="btn" href={`${base}lessons/name-badge/`}><R t="かだい1をはじめる" /></a>
+  </section>
+
+  <h2><R t="かだいの順番" /></h2>
+  <LessonList />
+</Base>
+
+<style>
+  .hero { display: flex; gap: 2rem; align-items: center; margin: 1rem 0 2rem; }
+  .hero :global(.led) { --size: 22px; --gap: 9px; flex: none; }
+  .hero :global(.led span.on) { animation: beat 1.6s ease-in-out infinite; }
+  @keyframes beat { 0%, 60%, 100% { opacity: 1; } 30% { opacity: .35; } }
+  .lead { font-size: 1.1rem; margin: 0; }
+
+  .quiz fieldset { border: 0; margin: 0 0 1.25rem; padding: 0; }
+  .quiz fieldset[hidden] { display: none; }
+  .quiz legend { font-family: var(--font-head); font-weight: 700; font-size: 1.1rem; margin-bottom: .4rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .chips label { position: relative; }
+  .chips input { position: absolute; opacity: 0; inset: 0; }
+  .chips span {
+    display: inline-block; padding: .3rem 1rem; border: 2px solid var(--ink); border-radius: 999px;
+    background: #fff; cursor: pointer; font-family: var(--font-head); font-weight: 700;
+  }
+  .chips input:checked + span { background: var(--ink); color: #fff; }
+  .chips input:checked + span :global(rt) { color: #cfd6e4; }
+  .chips input:focus-visible + span { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  .result { margin: 1.5rem 0 2.5rem; }
+  .result-msg { background: #fff8e6; border-left: 6px solid var(--gold); padding: .5rem 1rem; border-radius: var(--radius-s); }
+
+  @media (max-width: 640px) {
+    .hero { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .hero :global(.led) { --size: 16px; --gap: 6px; }
+  }
+</style>
+
+<script>
+  import { getProfile, setProfile } from '../scripts/profile.js';
+
+  const form = document.getElementById('quiz') as HTMLFormElement;
+  const gradeQ = document.getElementById('q-grade')!;
+  const result = document.getElementById('result')!;
+
+  const render = () => {
+    const p = getProfile();
+    for (const [name, val] of [['who', p.who], ['grade', p.grade], ['device', p.device ?? (p.deviceAnswered ? '' : undefined)], ['has', p.has]]) {
+      if (val === undefined) continue;
+      const el = form.querySelector<HTMLInputElement>(`input[name="${name}"][value="${val}"]`);
+      if (el) el.checked = true;
+    }
+    gradeQ.hidden = p.who === 'adult';
+    const answered = p.who && (p.who === 'adult' || p.grade) && p.deviceAnswered && p.has;
+    result.hidden = !answered;
+    document.getElementById('msg-nobit')!.hidden = p.has !== 'no';
+    document.getElementById('msg-tablet')!.hidden = p.device !== 'tablet';
+  };
+
+  form.addEventListener('change', (e) => {
+    const t = e.target as HTMLInputElement;
+    const p = getProfile();
+    if (t.name === 'who') {
+      setProfile({ who: t.value, furigana: t.value === 'adult' ? 'adult' : (p.grade ?? 'all') });
+    } else if (t.name === 'grade') {
+      setProfile({ grade: t.value, furigana: t.value });
+    } else if (t.name === 'device') {
+      setProfile({ device: t.value || undefined, deviceAnswered: true });
+      if (!t.value) delete document.documentElement.dataset.device;
+    } else if (t.name === 'has') {
+      setProfile({ has: t.value });
+    }
+    render();
+  });
+
+  render();
+</script>

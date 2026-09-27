@@ -1,0 +1,166 @@
+---
+import Base from './Base.astro';
+import LedMatrix from '../components/LedMatrix.astro';
+import R from '../components/R.astro';
+import { lessons } from '../lib/lessons.js';
+
+const { frontmatter } = Astro.props;
+const lesson = lessons.find((l) => l.id === frontmatter.id);
+const index = lessons.indexOf(lesson);
+const next = lessons[index + 1];
+const base = import.meta.env.BASE_URL;
+---
+<Base title={lesson.title}>
+  <article class="lesson" data-lesson={lesson.id}>
+    <header class="lesson-head">
+      <LedMatrix pattern={lesson.led} label={`${lesson.title}のアイコン`} />
+      <div>
+        <p class="lesson-step"><R t={`かだい ${index + 1}／${lessons.length}`} /></p>
+        <h1><R t={lesson.title} /></h1>
+        <p class="lesson-meta">
+          <R t={`めやす ${lesson.minutes}分`} />
+          ・<a href={lesson.official} target="_blank" rel="noopener">microbit.org のページ（英語）</a>
+        </p>
+      </div>
+    </header>
+
+    <div class="tabs" role="tablist" aria-label="だれがやる？"></div>
+    <div class="lesson-body">
+      <slot />
+    </div>
+
+    <footer class="lesson-done panel">
+      <p class="done-msg"><R t="さいごまでできたら、ボタンをおそう。" /></p>
+      <button class="btn" id="done-btn" type="button">できた！</button>
+      {next && (
+        <p class="next">
+          <R t="つぎのかだい：" /><a href={next.ready ? `${base}lessons/${next.id}/` : `${base}lessons/`}><R t={next.title} /></a>
+        </p>
+      )}
+    </footer>
+  </article>
+</Base>
+
+<style is:global>
+  .lesson-head { display: flex; gap: 1.25rem; align-items: center; margin-bottom: 1.5rem; }
+  .lesson-head .led { --size: 14px; --gap: 5px; flex: none; }
+  .lesson-step { margin: 0; font-family: var(--font-head); color: var(--led); font-weight: 700; }
+  .lesson-meta { margin: 0; font-size: .92rem; color: var(--ink-soft); }
+
+  .tabs { display: flex; gap: .5rem; border-bottom: 2px solid var(--ink); margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tabs button {
+    font: inherit; font-family: var(--font-head); font-weight: 700; font-size: 1rem;
+    padding: .4rem 1.1rem; border: 2px solid var(--ink); border-bottom: 0;
+    border-radius: var(--radius-s) var(--radius-s) 0 0; background: #eef2f7; color: var(--ink-soft);
+    cursor: pointer; margin-bottom: -2px;
+  }
+  .tabs button[aria-selected="true"] { background: var(--card); color: var(--ink); }
+  .tab-panel { background: var(--card); border: 2px solid var(--ink); border-radius: var(--radius-l); padding: .5rem 1.5rem 1.25rem; }
+  .tab-panel[hidden] { display: none; }
+  .tab-panel > h2:first-child { display: none; } /* 見出しはタブが代わりに示す */
+  .tab-panel h3 { border-left: 6px solid var(--led); padding-left: .6rem; }
+
+  /* 手順チェック */
+  .lesson-body ul.contains-task-list { list-style: none; padding-left: 0; }
+  .lesson-body li.task-list-item { position: relative; padding: .35rem 0 .35rem 2rem; border-bottom: 1px dashed var(--grid); }
+  .lesson-body li.task-list-item input { position: absolute; left: .1rem; top: .95rem; width: 1.2rem; height: 1.2rem; margin: 0; accent-color: var(--done); }
+  .lesson-body li.task-list-item.checked { color: var(--ink-soft); }
+
+  /* 使う機器ごとの手順 */
+  .device { border: 2px dashed var(--gold); border-radius: var(--radius-s); padding: .25rem 1rem; margin: 1rem 0; }
+  .device-label { font-family: var(--font-head); font-weight: 700; color: var(--gold); margin: .5rem 0 0; }
+  html[data-device] .device { display: none; }
+  html[data-device="usb"] .device[data-device="usb"],
+  html[data-device="mac"] .device[data-device="mac"],
+  html[data-device="tablet"] .device[data-device="tablet"] { display: block; }
+
+  /* ヒント */
+  .lesson-body details { background: #fff8e6; border-left: 6px solid var(--gold); border-radius: var(--radius-s); padding: .4rem 1rem; margin: 1rem 0; }
+  .lesson-body summary { cursor: pointer; font-family: var(--font-head); font-weight: 700; }
+
+  /* 親向けの声かけ */
+  .lesson-body blockquote { margin: 1rem 0; padding: .5rem 1rem; background: #eef6ff; border-radius: var(--radius-l); border: 2px solid #b9d3f2; }
+
+  .lesson-done { margin-top: 2rem; text-align: center; }
+  .lesson-done.is-done { border-color: var(--done); }
+  .lesson-done.is-done .btn { background: var(--done); }
+  .next { margin-bottom: 0; }
+</style>
+
+<script>
+  import { getProfile, getProgress, setProgress } from '../scripts/profile.js';
+
+  const TABS = { 'こども': 'child', 'おやこ': 'family', 'おとな': 'adult' };
+  const article = document.querySelector('.lesson') as HTMLElement;
+  const lessonId = article.dataset.lesson!;
+  const body = article.querySelector('.lesson-body')!;
+  const tabBar = article.querySelector('.tabs')!;
+
+  // h2（こども／おやこ／おとな）ごとに本文を区切ってタブにする
+  const panels: Record<string, HTMLElement> = {};
+  let current: HTMLElement | null = null;
+  for (const node of Array.from(body.childNodes)) {
+    if (node instanceof HTMLHeadingElement && node.tagName === 'H2') {
+      const label = (node.cloneNode(true) as HTMLElement);
+      label.querySelectorAll('rt').forEach((rt) => rt.remove());
+      const key = TABS[label.textContent!.trim() as keyof typeof TABS];
+      if (key) {
+        current = document.createElement('section');
+        current.className = 'tab-panel' + (key === 'adult' ? ' for-adult' : '');
+        current.id = `panel-${key}`;
+        current.setAttribute('role', 'tabpanel');
+        panels[key] = current;
+        body.appendChild(current);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.setAttribute('role', 'tab');
+        btn.dataset.key = key;
+        btn.setAttribute('aria-controls', current.id);
+        btn.textContent = label.textContent!.trim();
+        tabBar.appendChild(btn);
+      }
+    }
+    if (current && node !== current) current.appendChild(node);
+  }
+
+  const show = (key: string) => {
+    for (const [k, p] of Object.entries(panels)) p.hidden = k !== key;
+    tabBar.querySelectorAll('button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.key === key)));
+  };
+  tabBar.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest('button');
+    if (b) show(b.dataset.key!);
+  });
+  const who = getProfile().who;
+  show(panels[who] ? who : 'child');
+
+  // 手順チェックを保存する
+  const progress = getProgress()[lessonId] || {};
+  const checks: Record<string, boolean> = progress.checks || {};
+  body.querySelectorAll<HTMLInputElement>('li.task-list-item input[type="checkbox"]').forEach((box, i) => {
+    const panel = box.closest('.tab-panel')?.id ?? 'x';
+    const key = `${panel}-${i}`;
+    box.disabled = false;
+    box.checked = !!checks[key];
+    box.closest('li')!.classList.toggle('checked', box.checked);
+    box.addEventListener('change', () => {
+      checks[key] = box.checked;
+      box.closest('li')!.classList.toggle('checked', box.checked);
+      setProgress(lessonId, { checks });
+    });
+  });
+
+  // できた！ボタン
+  const doneBox = article.querySelector('.lesson-done')!;
+  const doneBtn = document.getElementById('done-btn')!;
+  const renderDone = (done: boolean) => {
+    doneBox.classList.toggle('is-done', done);
+    doneBtn.textContent = done ? 'できた！（もういちど おすと とりけし）' : 'できた！';
+  };
+  renderDone(!!progress.done);
+  doneBtn.addEventListener('click', () => {
+    const now = !getProgress()[lessonId]?.done;
+    setProgress(lessonId, { done: now });
+    renderDone(now);
+  });
+</script>
