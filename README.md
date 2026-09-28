@@ -34,6 +34,8 @@ main ブランチに push すると、GitHub Actions で GitHub Pages に公開�
 - `- [ ] 手順` と書くと、チェックできる手順になります（端末に保存されます）。
 - 使う機器ごとの手順は `<div class="device" data-device="usb|mac|tablet">` で囲みます。
 - 漢字にふりがなは書かなくてかまいません（自動で付きます）。
+- `<name-scroller text="TARO" editable></name-scroller>` と書くと、micro:bit の LED に文字が流れる図が入ります。
+  `editable` を付けると、読む人が文字を入力して試せます。文字の形は実機と同じ（codal-core のフォント、MIT License）です。
 
 ## ふりがなの読みを直す
 

@@ -93,3 +93,37 @@ main { padding: 2rem 0 4rem; }
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+
+/* <name-scroller>：micro:bit の LED に文字を流す部品 */
+name-scroller { display: block; margin: 1.25rem 0; }
+.ns-board {
+  --ns-size: 20px; --ns-gap: 12px;
+  position: relative;
+  display: grid; grid-template-columns: auto auto auto; align-items: center; gap: 22px;
+  width: max-content; max-width: 100%;
+  margin: 0 auto; padding: 26px 26px 54px;
+  background: var(--board); border-radius: 18px;
+}
+.ns-leds { display: grid; grid-template-columns: repeat(5, var(--ns-size)); gap: var(--ns-gap); }
+.ns-leds i { width: var(--ns-size); height: var(--ns-size); border-radius: 3px; background: #3a4058; }
+.ns-leds i.on { background: var(--led); box-shadow: 0 0 10px 3px rgba(226, 52, 43, .55); }
+.ns-btn { position: relative; width: 34px; height: 34px; border-radius: 5px; background: #464c64; display: grid; place-items: center; }
+.ns-btn span { width: 22px; height: 22px; border-radius: 50%; background: #14161f; }
+.ns-btn b { position: absolute; top: -1.6em; left: 50%; transform: translateX(-50%); color: #cfd6e4; font-size: .8rem; font-family: var(--font-head); line-height: 1; }
+.ns-edge { position: absolute; left: 12px; right: 12px; bottom: 10px; display: flex; justify-content: space-between; gap: 8px; }
+.ns-edge i { height: 30px; background: var(--gold); border-radius: 3px; flex: 2; }
+.ns-edge i:nth-child(2), .ns-edge i:nth-child(4) { flex: 1; }
+.ns-controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: .75rem; margin-top: .9rem; }
+.ns-label { display: flex; flex-direction: column; font-family: var(--font-head); font-weight: 700; font-size: .95rem; }
+.ns-input {
+  font: inherit; font-family: var(--font-body); font-size: 1.25rem; letter-spacing: .08em;
+  padding: .35rem .7rem; width: 13rem; max-width: 70vw;
+  border: 2px solid var(--ink); border-radius: var(--radius-s); background: #fff;
+}
+.ns-toggle { font: inherit; font-family: var(--font-head); font-weight: 700; padding: .4rem 1.1rem; border-radius: 999px; border: 2px solid var(--ink); background: #fff; color: var(--ink); cursor: pointer; }
+.ns-warn { text-align: center; color: #9a2a20; background: #fff0ee; border-radius: var(--radius-s); padding: .4rem .8rem; margin: .75rem auto 0; max-width: 32rem; }
+@media (max-width: 480px) {
+  .ns-board { --ns-size: 15px; --ns-gap: 9px; gap: 14px; padding: 22px 16px 48px; }
+  .ns-btn { width: 28px; height: 28px; }
+  .ns-btn span { width: 18px; height: 18px; }
+}
