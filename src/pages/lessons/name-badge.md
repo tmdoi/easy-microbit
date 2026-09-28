@@ -27,10 +27,25 @@ micro:bit に自分の名前を流して表示させよう。これが、きみ�
 
 ### つくりかた
 
+まずは動画を見てみよう。そのあと、同じようにやってみよう。
+
+<video class="howto" controls autoplay muted loop playsinline preload="metadata" poster="../../media/name-badge-howto.jpg" aria-label="MakeCode で名前バッジを作る手順の動画">
+  <source src="../../media/name-badge-howto.webm" type="video/webm">
+  <source src="../../media/name-badge-howto.mp4" type="video/mp4">
+</video>
+
 - [ ] 「新しいプロジェクト」をおして、名前をつけた
 - [ ] 「基本」の中から「文字列を表示」のブロックを出して、「ずっと」の中に入れた
 - [ ] 「Hello!」を消して、自分の名前をローマ字で書いた
 - [ ] 左のシミュレーターに、名前が流れて出てきた（上の「できあがりのイメージ」と同じ動きになったかな？）
+
+<details>
+<summary>「ようこそ！」という案内が出たら？</summary>
+
+はじめて MakeCode を開くと、使い方の案内が出ることがあるよ。
+「次へ」をおして読んでもいいし、右上の × でとじても大丈夫。
+
+</details>
 
 <details>
 <summary>どうしてローマ字なの？</summary>
@@ -84,6 +99,8 @@ micro:bit の光る点は 25 こしかないので、ひらがなや漢字は表
 
 - 名前のあとに、すきな言葉を足してみよう
 - 「ずっと」を「最初だけ」にかえると、どうなるかな？
+
+もっとやりたい人は、[MakeCode のトップページ](https://makecode.microbit.org/?lang=ja)の「チュートリアル」にある「名札」もやってみよう。画面の案内にしたがって進められるよ。
 
 ## おやこ
 
@@ -145,4 +162,5 @@ micro:bit の光る点は 25 こしかないので、ひらがなや漢字は表
 ### もっと知りたいとき
 
 - [microbit.org の Name badge のページ](https://microbit.org/teach/lessons/name-badge/)（英語・教員向け）
+- [MakeCode のチュートリアル「名札」](https://makecode.microbit.org/?lang=ja)（日本語・トップページの「チュートリアル」から。画面の案内つきで同じ内容を学べます）
 - [First lessons with MakeCode の全体](https://microbit.org/teach/lessons/first-lessons-with-makecode-and-the-microbit/)（英語・6つの課題の順路）

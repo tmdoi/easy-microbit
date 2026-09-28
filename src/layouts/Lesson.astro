@@ -74,6 +74,9 @@ const base = import.meta.env.BASE_URL;
   html[data-device="mac"] .device[data-device="mac"],
   html[data-device="tablet"] .device[data-device="tablet"] { display: block; }
 
+  /* 手順の動画 */
+  .lesson-body video.howto { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; margin: 1rem 0; border: 2px solid var(--ink); border-radius: var(--radius-s); background: var(--board); }
+
   /* ヒント */
   .lesson-body details { background: #fff8e6; border-left: 6px solid var(--gold); border-radius: var(--radius-s); padding: .4rem 1rem; margin: 1rem 0; }
   .lesson-body summary { cursor: pointer; font-family: var(--font-head); font-weight: 700; }
@@ -150,6 +153,11 @@ const base = import.meta.env.BASE_URL;
       setProgress(lessonId, { checks });
     });
   });
+
+  // 動きを減らす設定の人には、動画を自動再生しない
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    body.querySelectorAll<HTMLVideoElement>('video[autoplay]').forEach((v) => { v.autoplay = false; v.pause(); });
+  }
 
   // できた！ボタン
   const doneBox = article.querySelector('.lesson-done')!;
