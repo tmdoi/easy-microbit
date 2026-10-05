@@ -127,3 +127,9 @@ name-scroller { display: block; margin: 1.25rem 0; }
   .ns-btn { width: 28px; height: 28px; }
   .ns-btn span { width: 18px; height: 18px; }
 }
+
+/* <led-frames>：絵を順番に表示する部品（見た目は <name-scroller> と共通） */
+led-frames { display: block; margin: 1.25rem 0; }
+.lf-range { width: 13rem; max-width: 70vw; accent-color: var(--led); }
+.lf-value { font-family: var(--font-body); }
+.lf-note { text-align: center; color: var(--ink-soft); font-size: .95rem; margin: .5rem 0 0; }

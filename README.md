@@ -36,6 +36,9 @@ main ブランチに push すると、GitHub Actions で GitHub Pages に公開�
 - 漢字にふりがなは書かなくてかまいません（自動で付きます）。
 - `<name-scroller text="TARO" editable></name-scroller>` と書くと、micro:bit の LED に文字が流れる図が入ります。
   `editable` を付けると、読む人が文字を入力して試せます。文字の形は実機と同じ（codal-core のフォント、MIT License）です。
+- `<led-frames frames="heart small-heart" pause="500" editable></led-frames>` と書くと、絵を順番に切りかえるアニメーションが入ります。
+  切りかわる速さは MakeCode と同じ（アイコンを表示の 600 ミリ秒＋一時停止）。`editable` で一時停止の時間を変えて試せます。
+  使える絵の名前は `src/lib/icons.js` にあります。
 
 ## ふりがなの読みを直す
 

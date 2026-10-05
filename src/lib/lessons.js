@@ -9,7 +9,7 @@ export const lessons = [
     led: '.###.#...#######...##...#',
   },
   {
-    id: 'beating-heart', ready: false, minutes: 30,
+    id: 'beating-heart', ready: true, minutes: 30,
     title: 'ドキドキハート',
     summary: '絵を順番に表示して、アニメーションを作る。',
     official: 'https://microbit.org/teach/lessons/beating-heart/',
