@@ -16,7 +16,7 @@ export const lessons = [
     led: '.#.#.##########.###...#..',
   },
   {
-    id: 'emotion-badge', ready: false, minutes: 30,
+    id: 'emotion-badge', ready: true, minutes: 30,
     title: '気持ちバッジ',
     summary: 'ボタンを押すと、顔の表情が変わる。',
     official: 'https://microbit.org/teach/lessons/emotion-badge/',

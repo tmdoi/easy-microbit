@@ -39,6 +39,8 @@ main ブランチに push すると、GitHub Actions で GitHub Pages に公開�
 - `<led-frames frames="heart small-heart" pause="500" editable></led-frames>` と書くと、絵を順番に切りかえるアニメーションが入ります。
   切りかわる速さは MakeCode と同じ（アイコンを表示の 600 ミリ秒＋一時停止）。`editable` で一時停止の時間を変えて試せます。
   使える絵の名前は `src/lib/icons.js` にあります。
+- `<led-buttons a="happy" b="sad" editable></led-buttons>` と書くと、A・B ボタンをおすと絵が変わる micro:bit が入ります。
+  キーボードの A・B キーでもおせます。`editable` で、A と B で出す顔をえらべます。
 
 ## ふりがなの読みを直す
 
