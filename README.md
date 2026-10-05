@@ -45,6 +45,8 @@ main ブランチに push すると、GitHub Actions で GitHub Pages に公開�
   数の出かたは MakeCode の「数を表示」と同じ（1けたはそのまま、2けた以上は流れて消える）です。
 - `<led-light threshold="100" editable></led-light>` と書くと、まわりの明るさのスライダーで LED がつく・消える micro:bit（夜のライト）が入ります。
   明るさは MakeCode と同じ 0〜255。`editable` で、くらべる数を変えて試せます。
+- `<led-rps></led-rps>` と書くと、「ゆさぶる」をおすたびにグー・チョキ・パーのどれかが出る micro:bit（じゃんけん）が入ります。
+  変数「て」に入った数と、それまでに出た回数も表示します。
 
 ## ふりがなの読みを直す
 

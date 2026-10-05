@@ -37,7 +37,7 @@ export const lessons = [
     led: '.###.##...#....##....###.',
   },
   {
-    id: 'rock-paper-scissors', ready: false, minutes: 45,
+    id: 'rock-paper-scissors', ready: true, minutes: 45,
     title: 'じゃんけん',
     summary: 'ふると、グー・チョキ・パーのどれかが出る。',
     official: 'https://microbit.org/teach/lessons/rock-paper-scissors/',
