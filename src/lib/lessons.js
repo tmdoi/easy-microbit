@@ -30,7 +30,7 @@ export const lessons = [
     led: '..#...##....#....#...###.',
   },
   {
-    id: 'nightlight', ready: false, minutes: 45,
+    id: 'nightlight', ready: true, minutes: 45,
     title: '夜のライト',
     summary: '暗くなると自動でつくライトを作る。',
     official: 'https://microbit.org/teach/lessons/nightlight/',

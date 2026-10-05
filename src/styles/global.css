@@ -155,3 +155,9 @@ led-counter { display: block; margin: 1.25rem 0; }
   60% { transform: translate(-6px, 1px) rotate(-2deg); }
   80% { transform: translate(5px, -1px) rotate(1deg); }
 }
+
+/* <led-light>：まわりの明るさで LED がつく部品 */
+led-light { display: block; margin: 1.25rem 0; }
+.ll-room { padding: 1.25rem; border-radius: var(--radius-l); border: 2px solid var(--ink); transition: background .2s; }
+.ll-scale { display: flex; align-items: center; gap: .4rem; }
+.ll-value, .ll-tvalue { font-family: var(--font-body); }
