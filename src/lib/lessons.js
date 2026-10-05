@@ -23,7 +23,7 @@ export const lessons = [
     led: '......#.#......#...#.###.',
   },
   {
-    id: 'step-counter', ready: false, minutes: 45,
+    id: 'step-counter', ready: true, minutes: 45,
     title: '歩数計',
     summary: 'ゆれを感じるセンサーで、歩いた数を数える。',
     official: 'https://microbit.org/teach/lessons/step-counter/',

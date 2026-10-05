@@ -41,6 +41,8 @@ main ブランチに push すると、GitHub Actions で GitHub Pages に公開�
   使える絵の名前は `src/lib/icons.js` にあります。
 - `<led-buttons a="happy" b="sad" editable></led-buttons>` と書くと、A・B ボタンをおすと絵が変わる micro:bit が入ります。
   キーボードの A・B キーでもおせます。`editable` で、A と B で出す顔をえらべます。
+- `<led-counter></led-counter>` と書くと、「ゆさぶる」をおすたびに数が 1 ふえる micro:bit（歩数計）が入ります。
+  数の出かたは MakeCode の「数を表示」と同じ（1けたはそのまま、2けた以上は流れて消える）です。
 
 ## ふりがなの読みを直す
 

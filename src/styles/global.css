@@ -143,3 +143,15 @@ led-buttons { display: block; margin: 1.25rem 0; }
 .lb-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 .lb-hint { text-align: center; font-family: var(--font-head); font-weight: 700; margin: .75rem 0 0; }
 .lb-select { display: block; font: inherit; font-family: var(--font-body); font-size: 1.05rem; padding: .3rem .5rem; margin-top: .2rem; border: 2px solid var(--ink); border-radius: var(--radius-s); background: #fff; }
+
+/* <led-counter>：ゆさぶるたびに数がふえる部品 */
+led-counter { display: block; margin: 1.25rem 0; }
+.lc-shake { background: var(--led); color: #fff; }
+.lc-shaking { animation: lc-shake .35s ease-in-out; }
+@keyframes lc-shake {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  20% { transform: translate(-8px, 2px) rotate(-3deg); }
+  40% { transform: translate(8px, -2px) rotate(3deg); }
+  60% { transform: translate(-6px, 1px) rotate(-2deg); }
+  80% { transform: translate(5px, -1px) rotate(1deg); }
+}
